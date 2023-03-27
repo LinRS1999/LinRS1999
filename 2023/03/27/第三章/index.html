@@ -1,0 +1,413 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#202020"/>
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+  
+  
+    <meta name="keywords" content="" />
+  
+
+  
+    <meta name="description" content="机器学习第三章笔记" />
+  
+  
+  
+  <link rel="icon" type="image/x-icon" href="/images/footer-logo.png">
+  
+  <title>机器学习第三章笔记 [ LinRS1999 ]</title>
+  
+    <!-- stylesheets list from config.yml -->
+    
+      <link rel="stylesheet" href="//cdn.bootcss.com/pure/1.0.0/pure-min.css">
+    
+      <link rel="stylesheet" href="/css/xoxo.css">
+    
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  <div class="nav-container">
+    <nav class="home-menu pure-menu pure-menu-horizontal">
+  <a class="pure-menu-heading" href="/">
+    
+    <span class="title" style="text-transform:none">LinRS1999</span>
+  </a>
+
+  <ul class="pure-menu-list clearfix">
+      
+          
+            
+              <li class="pure-menu-item"><a href="/" class="pure-menu-link">文章</a></li>
+            
+          
+      
+          
+            
+              <li class="pure-menu-item"><a href="/project" class="pure-menu-link">项目</a></li>
+            
+          
+      
+          
+            
+              <li class="pure-menu-item"><a href="/leetcode" class="pure-menu-link">Leetcode</a></li>
+            
+          
+      
+          
+            
+              <li class="pure-menu-item"><a href="/about" class="pure-menu-link">关于</a></li>
+            
+          
+      
+  </ul>
+   
+</nav>
+
+  </div>
+
+  <div class="container" id="content-outer">
+    <div class="inner" id="content-inner">
+      <div class="post-container">
+  <article class="post" id="post">
+    <header class="post-header text-center">
+      <h1 class="title">
+        机器学习第三章笔记
+      </h1>
+      <span>
+        
+        <time class="time" datetime="2023-03-27T00:48:25.917Z">
+        2023-03-27
+      </time>
+        
+      </span>
+      <span class="slash">/</span>
+      <span class="post-meta">
+      <span class="post-tags">
+        
+      </span>
+    </span>
+      <span class="slash">/</span>
+      <span class="read">
+      <span id="busuanzi_value_page_pv"></span> 点击
+    </span>
+      <span class="slash">/</span>
+      <span class="read">阅读耗时 19 分钟</span>
+    </header>
+
+    <div class="post-content">
+      <h2 id="第三章"><a href="#第三章" class="headerlink" title="第三章"></a>第三章</h2><h3 id="3-1贝叶斯决策与MAP分类器"><a href="#3-1贝叶斯决策与MAP分类器" class="headerlink" title="3.1贝叶斯决策与MAP分类器"></a>3.1贝叶斯决策与MAP分类器</h3><ul>
+<li>当两个类有相同的均值时，MICD分类器倾向于选择方差更大的类，但其实决策真值应该倾向于方差更小，即分布更紧致的类。感觉有点像同心圆，有相同的圆心，然后每一圈之间代表一个类。</li>
+<li>基于距离的决策一般只考虑了训练样本的分布情况，忽略了类与类之间的关系。</li>
+<li>先验概率：根据以往的经验和分析得到的概率，不依靠观测数据。</li>
+<li>观测似然概率：也叫似然概率，这个可以比做成在很多组参数中，选择一组最能拟合观测数据的参数。</li>
+<li>MAP分类器，就是选择后验概率最大的那个类，决策边界也就是两个后验概率相等的地方。一般单维空间，有条决策边界，高维空间，就是非线性的边界了。</li>
+<li>决策误差，就是与真值相比，分类分错了的误差，以二分类来说，概率误差就是等于未选择的另一个类的后验概率。</li>
+<li>平均概率误差就是样本的概率误差的均值。</li>
+<li>MAP分类器选择后验概率最大的类，也就是在最小化平均概率误差，也就是在最小化决策误差。</li>
+</ul>
+<h3 id="3-2MAP分类器：高斯观测概率"><a href="#3-2MAP分类器：高斯观测概率" class="headerlink" title="3.2MAP分类器：高斯观测概率"></a>3.2MAP分类器：高斯观测概率</h3><ul>
+<li>先验概率和观测概率可以有常数表达、参数化解析表达（高斯分布等）、非参数化表达（直方图、核密度等）。</li>
+<li>高斯分布带入MAP分类器，对于二分类问题，如果两个类的方差，即标准差相等，决策边界就只有一条，因为二次项消除了。此时，如果类1的均值小于类2的均值，那么类1在分类时就比较吃亏了，因为决策边界会偏向类1，也就是说属于类1的X轴所对应区域减小，分类器偏向类2，也就是偏向先验概率高的类。</li>
+<li>同样是高斯分布，二分类问题，如果方差不相等，将会有两条决策边界，也就是非线性的边界了，此时如果类1的标准差小于类2的标准差，并且两个类均值相等，那么类2就吃亏了，分类器会偏向标准差小的类，也就是更瘦、更紧致的类。因为当两个后验概率相等时，在当前条件下，减去的常数项大于0，也就是方程解出的两个解的绝对距离会加大，导致属于类1的X轴区域加大，分类器偏向类1。</li>
+</ul>
+<h3 id="3-3决策风险与贝叶斯分类器"><a href="#3-3决策风险与贝叶斯分类器" class="headerlink" title="3.3决策风险与贝叶斯分类器"></a>3.3决策风险与贝叶斯分类器</h3><ul>
+<li>由于数据集不平衡等其他原因，引出了决策风险和损失，来控制MAP分类器。因此贝叶斯分类器&#x3D;MAP分类器+决策风险。</li>
+<li>贝叶斯分类选择决策风险最小的类。</li>
+<li>加入了决策风险后，使得样本个数少的类对应X轴区域加大，缓解了一边倒的趋势。</li>
+<li>贝叶斯决策的期望损失根据公式，用通俗的话来说就是所有样本，对于所有的类的后验概率乘对应的损失值的和。</li>
+<li>因此贝叶斯分类器要做的事就是去最小化期望损失。</li>
+<li>但是这时候又有问题，如果特征维度较高，那么特征与特征之间的相关性会导致似然概率非常难计算，也就导致了后验概率非常难计算。</li>
+<li>所以这时候就引出了朴素贝叶斯分类器，它假设了每个特征之间是相互独立的，也就解决了上面的问题。</li>
+<li>对于拒绝选项，也就是虽然选出了最大后验概率对应的类，但是这个最大后验概率也很小，比如在决策边界附近，不太能接受，那就设置个阈值，拒绝他。这样可以提高分类器的各项指标，F1-Score等等。比如对于医疗方面的应用，可以把这些拒绝的样本让专家去判断。</li>
+</ul>
+<h3 id="3-4最大似然估计"><a href="#3-4最大似然估计" class="headerlink" title="3.4最大似然估计"></a>3.4最大似然估计</h3><ul>
+<li>在上面的贝叶斯分类器中，需要事先知道先验概率和似然概率才能求后验概率，但先验概率和似然概率并不是一开始就知道的，提供的数据集只是冷冰冰的数字，因此就需要使用相关算法从这些数字中得到先验概率和似然概率。</li>
+<li>此时有两种参数估计方法，最大似然估计和贝叶斯估计。</li>
+<li>最大似然估计就是想要找到一些参数，能够最大化地去拟合我们地数据分布。当然，不能把所以数据都拿来进行计算，这样计算量非常大，所以需要进行采样，并假设了采样的样本都符合相互独立条件。</li>
+<li>似然函数的目标函数就是希望在给定参数（但这里的参数并不是最优值）的条件下，求每个样本似然概率乘积的最大值。</li>
+<li>既然要求最大值，那就需要进行求偏导了，令偏导等于0。</li>
+<li>因此可以得到先验概率的最大似然估计就是该类训练样本出现的频率。</li>
+<li>接着我们假设我们的样本数据服从高斯分布，那么我们就需要去学习均值和方差，或者协方差。</li>
+<li>同样的，要求似然函数的目标函数的最大值，并求偏导，所以要将高斯分布的表达式代入似然函数。</li>
+<li>求完之后，可以得到高斯分布的均值的最大似然估计等于所有训练样本的均值，协方差的最大似然估计等于所有训练样本的协方差。</li>
+</ul>
+<h3 id="3-5最大似然的估计偏差"><a href="#3-5最大似然的估计偏差" class="headerlink" title="3.5最大似然的估计偏差"></a>3.5最大似然的估计偏差</h3><ul>
+<li>既然是估计，那就可能会有偏差。所以就定义了如果一个参数的估计量的数学期望是该参数的真值，则该估计量是无偏估计。</li>
+<li>无偏估计也意味着训练样本个数足够多，该估计值就是参数的真实值。因为我们只是取了部分样本来估计，当我们增加所取的样本，甚至到把整个样本集都拿来，那肯定是无偏估计。</li>
+<li>因此，分别计算均值和协方差的估计偏差，得到均值是无偏估计，协方差是有偏估计，而且随之训练样本的个数增大，偏差减小。即1&#x2F;N，因此实际使用时，将估计值乘N&#x2F;N-1。</li>
+</ul>
+<h3 id="3-6贝叶斯估计（1）"><a href="#3-6贝叶斯估计（1）" class="headerlink" title="3.6贝叶斯估计（1）"></a>3.6贝叶斯估计（1）</h3><ul>
+<li><p>网上查了资料，感觉这一节讲的是最大后验估计（MAP）。</p>
+</li>
+<li><p>概率分布的参数θ作为随机变量，那么给定参数θ的先验概率和训练样本，估计参数θ分布的后验概率。</p>
+</li>
+<li><p>假设，Ci类的观测似然概率是单维高斯分布，并且方差1已知，那么待估计参数θ就是均值1。并且假设θ的先验概率分布也服从单维高斯分布，方差2和均值2已知。因此可以计算后验概率。</p>
+</li>
+<li><p>计算出来的后验概率也是高斯分布的形式，方差3和均值3和方差1、方差2，均值1、均值2还有样本个数有关。</p>
+<p><img src="C:\Users\LinRS\AppData\Roaming\Typora\typora-user-images\image-20210501144331974.png" alt="image-20210501144331974"></p>
+</li>
+<li><p>当样本个数非常多的时候，可以观察到，方差3趋近于0，均值3就会是无偏估计。也就是逐渐逼近最大似然估计。</p>
+</li>
+<li><p>如果方差2等于0，根据公式，可以看到均值3会等于均值2，也就是说先验概率的高斯分布均值决定了这个后验概率的高斯分布的均值，也就是说样本个数的多少已经对这个后验概率的高斯分布的均值没有影响了。</p>
+</li>
+<li><p>如果方差2远大于方差1，那么均值3就会逼近于m，m也就是样本均值，这就说明了样本个数增多，会使得估计值逐渐逼近无偏估计。</p>
+</li>
+<li><p>综上，说明了贝叶斯估计具有不断学习的能力，它可以在刚开始只有少数的样本进行学习，但随着样本个数的增加，逐渐学习到该参数期望的真值。</p>
+</li>
+</ul>
+<h3 id="3-7贝叶斯估计（2）"><a href="#3-7贝叶斯估计（2）" class="headerlink" title="3.7贝叶斯估计（2）"></a>3.7贝叶斯估计（2）</h3><ul>
+<li><p>这一节就应该是贝叶斯估计了。</p>
+</li>
+<li><p>利用上一节的θ的后验概率，再和θ是确定值的情况下的观测似然进行相乘并对θ进行积分，计算得到关于θ的边缘概率。从而得到观测似然概率的估计，该估计也是服从高斯分布的。</p>
+</li>
+<li><p>并且随着样本个数的增加，这个高斯分布的均值逐渐趋于真值，方差逐渐趋于0，也就说明了贝叶斯估计的不断学习能力。这里方差趋于0，也就是他会变得越来越瘦、最后变成一个垂直X轴的直线，这也就说明了贝叶斯估计学习到了最优的值，非这个值不可了。</p>
+</li>
+<li><p>对比最大似然估计，最大似然估计有明确的目标函数，只需要求偏导就能得到估计值。而贝叶斯估计有多个取值的可能性，在学习的过程中，逐渐缩小取值的范围，直到趋近真值，所以贝叶斯估计计算复杂度很高。</p>
+</li>
+<li><p>这里再记录一下网上看到的博文和我的理解，讲MLE、MAP和贝叶斯估计的。</p>
+<p>1.MLE就好像是通过一个指标，来判断一系列待定的参数的好坏，并直接选取指标最好、最高的来解决问题。</p>
+<p>2.MAP就不仅仅通过指标了，还加入了一个参照，这个参照就是先验概率，然后计算后验概率，选取后验概率最高的参数来解决问题。</p>
+<p>3.贝叶斯估计继续优化，在得到的后验概率的基础上，与θ是确定值情况下的观测似然相乘，就好像是这里的高斯分布，在对应与不同的θ时，有不同的值，这个不同的值就是一个权重，与对应的θ的后验概率相乘，最后累加（也就是积分），得到一个值，这个值通过了重重计算和考验，所以很靠谱，用它来解决问题。</p>
+</li>
+</ul>
+<h3 id="3-8无参数概率密度估计（1）-amp-amp-3-9直方图与核密度估计"><a href="#3-8无参数概率密度估计（1）-amp-amp-3-9直方图与核密度估计" class="headerlink" title="3.8无参数概率密度估计（1）&amp;&amp; 3.9直方图与核密度估计"></a>3.8无参数概率密度估计（1）&amp;&amp; 3.9直方图与核密度估计</h3><ul>
+<li><p>无参数估计方法：KNN估计、直方图估计、核密度估计</p>
+</li>
+<li><p><img src="C:\Users\LinRS\AppData\Roaming\Typora\typora-user-images\image-20210501152749307.png" alt="image-20210501152749307"></p>
+</li>
+<li><p><img src="C:\Users\LinRS\AppData\Roaming\Typora\typora-user-images\image-20210501152803914.png" alt="image-20210501152803914"></p>
+</li>
+</ul>
+
+    </div>
+
+  </article>
+  <div class="toc-container">
+    
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E7%AB%A0"><span class="toc-text">第三章</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%86%B3%E7%AD%96%E4%B8%8EMAP%E5%88%86%E7%B1%BB%E5%99%A8"><span class="toc-text">3.1贝叶斯决策与MAP分类器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2MAP%E5%88%86%E7%B1%BB%E5%99%A8%EF%BC%9A%E9%AB%98%E6%96%AF%E8%A7%82%E6%B5%8B%E6%A6%82%E7%8E%87"><span class="toc-text">3.2MAP分类器：高斯观测概率</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3%E5%86%B3%E7%AD%96%E9%A3%8E%E9%99%A9%E4%B8%8E%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%88%86%E7%B1%BB%E5%99%A8"><span class="toc-text">3.3决策风险与贝叶斯分类器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4%E6%9C%80%E5%A4%A7%E4%BC%BC%E7%84%B6%E4%BC%B0%E8%AE%A1"><span class="toc-text">3.4最大似然估计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5%E6%9C%80%E5%A4%A7%E4%BC%BC%E7%84%B6%E7%9A%84%E4%BC%B0%E8%AE%A1%E5%81%8F%E5%B7%AE"><span class="toc-text">3.5最大似然的估计偏差</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-6%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%B0%E8%AE%A1%EF%BC%881%EF%BC%89"><span class="toc-text">3.6贝叶斯估计（1）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-7%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%B0%E8%AE%A1%EF%BC%882%EF%BC%89"><span class="toc-text">3.7贝叶斯估计（2）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-8%E6%97%A0%E5%8F%82%E6%95%B0%E6%A6%82%E7%8E%87%E5%AF%86%E5%BA%A6%E4%BC%B0%E8%AE%A1%EF%BC%881%EF%BC%89-amp-amp-3-9%E7%9B%B4%E6%96%B9%E5%9B%BE%E4%B8%8E%E6%A0%B8%E5%AF%86%E5%BA%A6%E4%BC%B0%E8%AE%A1"><span class="toc-text">3.8无参数概率密度估计（1）&amp;&amp; 3.9直方图与核密度估计</span></a></li></ol></li></ol>
+  </div>
+
+
+  </div>
+</div>
+<div class="copyright">
+    <span>本作品采用</span>
+    <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by/4.0/">知识共享署名 4.0 国际许可协议</a>
+    <span>进行许可。 转载时请注明原文链接。</span>
+</div>
+
+
+  
+    <div class="post-nav">
+      <div class="post-nav-item post-nav-next">
+        
+          <span>〈 </span>
+          <a href="/2023/03/27/%E7%AC%AC%E5%9B%9B%E7%AB%A0/" rel="next" title="机器学习第四章笔记">
+          机器学习第四章笔记
+          </a>
+        
+      </div>
+  
+      <div class="post-nav-item post-nav-prev">
+          
+          <a href="/2023/03/27/%E7%AC%AC%E4%BA%8C%E7%AB%A0/" rel="prev" title="机器学习第二章笔记">
+            机器学习第二章笔记
+          </a>
+          <span>〉</span>
+        
+      </div>
+    </div>
+  
+
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+    <div id="gitalk-container"></div>
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script type="text/javascript">
+        var gitalk = new Gitalk({
+            clientID: 'xxx',
+            clientSecret: 'xxx',
+            id: window.location.pathname,
+            repo: 'issue repo name',
+            owner: 'Github username',
+            admin: 'github username'
+        })
+        gitalk.render('gitalk-container')
+    </script>
+
+
+
+    </div>
+
+    
+
+  </div>
+  <footer class="footer text-center">
+    <div id="bottom-inner">
+        <a class="bottom-item" href="https://github.com/fooying" target="_blank">GitHub</a> |
+        <a class="bottom-item" href="/links">友情链接</a> |
+        <a class="bottom-item" href="https://hexo.io" target="_blank">Powered by hexo</a> |
+        <a class="bottom-item" href="https://github.com/fooying/hexo-theme-xoxo-plus" target="_blank">Theme xoxo-plus</a> |
+        <a class="bottom-item" href="/atom.xml">RSS</a>
+    </div>
+</footer>
+
+  
+
+<script>
+  (function(window, document, undefined) {
+
+    var timer = null;
+
+    function returnTop() {
+      cancelAnimationFrame(timer);
+      timer = requestAnimationFrame(function fn() {
+        var oTop = document.body.scrollTop || document.documentElement.scrollTop;
+        if (oTop > 0) {
+          document.body.scrollTop = document.documentElement.scrollTop = oTop - 50;
+          timer = requestAnimationFrame(fn);
+        } else {
+          cancelAnimationFrame(timer);
+        }
+      });
+    }
+
+    var hearts = [];
+    window.requestAnimationFrame = (function() {
+      return window.requestAnimationFrame ||
+        window.webkitRequestAnimationFrame ||
+        window.mozRequestAnimationFrame ||
+        window.oRequestAnimationFrame ||
+        window.msRequestAnimationFrame ||
+        function(callback) {
+          setTimeout(callback, 1000 / 60);
+        }
+    })();
+    init();
+
+    function init() {
+      css(".heart{z-index:9999;width: 10px;height: 10px;position: fixed;background: #f00;transform: rotate(45deg);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);}.heart:after,.heart:before{content: '';width: inherit;height: inherit;background: inherit;border-radius: 50%;-webkit-border-radius: 50%;-moz-border-radius: 50%;position: absolute;}.heart:after{top: -5px;}.heart:before{left: -5px;}");
+      attachEvent();
+      gameloop();
+      addMenuEvent();
+    }
+
+    function gameloop() {
+      for (var i = 0; i < hearts.length; i++) {
+        if (hearts[i].alpha <= 0) {
+          document.body.removeChild(hearts[i].el);
+          hearts.splice(i, 1);
+          continue;
+        }
+        hearts[i].y--;
+        hearts[i].scale += 0.004;
+        hearts[i].alpha -= 0.013;
+        hearts[i].el.style.cssText = "left:" + hearts[i].x + "px;top:" + hearts[i].y + "px;opacity:" + hearts[i].alpha + ";transform:scale(" + hearts[i].scale + "," + hearts[i].scale + ") rotate(45deg);background:" + hearts[i].color;
+      }
+      requestAnimationFrame(gameloop);
+    }
+
+    /**
+     * 给logo设置点击事件
+     * 
+     * - 回到顶部
+     * - 出现爱心
+     */
+    function attachEvent() {
+      var old = typeof window.onclick === "function" && window.onclick;
+      var logo = document.getElementById("logo");
+      if (logo) {
+        logo.onclick = function(event) {
+          returnTop();
+          old && old();
+          createHeart(event);
+        }
+      }
+      
+    }
+
+    function createHeart(event) {
+      var d = document.createElement("div");
+      d.className = "heart";
+      hearts.push({
+        el: d,
+        x: event.clientX - 5,
+        y: event.clientY - 5,
+        scale: 1,
+        alpha: 1,
+        color: randomColor()
+      });
+      document.body.appendChild(d);
+    }
+
+    function css(css) {
+      var style = document.createElement("style");
+      style.type = "text/css";
+      try {
+        style.appendChild(document.createTextNode(css));
+      } catch (ex) {
+        style.styleSheet.cssText = css;
+      }
+      document.getElementsByTagName('head')[0].appendChild(style);
+    }
+
+    function randomColor() {
+      // return "rgb(" + (~~(Math.random() * 255)) + "," + (~~(Math.random() * 255)) + "," + (~~(Math.random() * 255)) + ")";
+      return "#F44336";
+    }
+
+    function addMenuEvent() {
+      var menu = document.getElementById('menu-main-post');
+      if (menu) {
+        var toc = document.getElementById('toc');
+        if (toc) {
+          menu.onclick = function() {
+            if (toc) {
+              if (toc.style.display == 'block') {
+                toc.style.display = 'none';
+              } else {
+                toc.style.display = 'block';
+              }
+            }
+          };
+        } else {
+          menu.style.display = 'none';
+        }
+      }
+    }
+
+  })(window, document);
+</script>
+
+  
+
+
+
+  
+<script>
+  (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+          bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else {
+          bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+</body>
+</html>

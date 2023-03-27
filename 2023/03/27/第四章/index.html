@@ -1,0 +1,433 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#202020"/>
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+  
+  
+    <meta name="keywords" content="" />
+  
+
+  
+    <meta name="description" content="机器学习第四章笔记" />
+  
+  
+  
+  <link rel="icon" type="image/x-icon" href="/images/footer-logo.png">
+  
+  <title>机器学习第四章笔记 [ LinRS1999 ]</title>
+  
+    <!-- stylesheets list from config.yml -->
+    
+      <link rel="stylesheet" href="//cdn.bootcss.com/pure/1.0.0/pure-min.css">
+    
+      <link rel="stylesheet" href="/css/xoxo.css">
+    
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  <div class="nav-container">
+    <nav class="home-menu pure-menu pure-menu-horizontal">
+  <a class="pure-menu-heading" href="/">
+    
+    <span class="title" style="text-transform:none">LinRS1999</span>
+  </a>
+
+  <ul class="pure-menu-list clearfix">
+      
+          
+            
+              <li class="pure-menu-item"><a href="/" class="pure-menu-link">文章</a></li>
+            
+          
+      
+          
+            
+              <li class="pure-menu-item"><a href="/project" class="pure-menu-link">项目</a></li>
+            
+          
+      
+          
+            
+              <li class="pure-menu-item"><a href="/leetcode" class="pure-menu-link">Leetcode</a></li>
+            
+          
+      
+          
+            
+              <li class="pure-menu-item"><a href="/about" class="pure-menu-link">关于</a></li>
+            
+          
+      
+  </ul>
+   
+</nav>
+
+  </div>
+
+  <div class="container" id="content-outer">
+    <div class="inner" id="content-inner">
+      <div class="post-container">
+  <article class="post" id="post">
+    <header class="post-header text-center">
+      <h1 class="title">
+        机器学习第四章笔记
+      </h1>
+      <span>
+        
+        <time class="time" datetime="2023-03-27T00:48:25.888Z">
+        2023-03-27
+      </time>
+        
+      </span>
+      <span class="slash">/</span>
+      <span class="post-meta">
+      <span class="post-tags">
+        
+      </span>
+    </span>
+      <span class="slash">/</span>
+      <span class="read">
+      <span id="busuanzi_value_page_pv"></span> 点击
+    </span>
+      <span class="slash">/</span>
+      <span class="read">阅读耗时 20 分钟</span>
+    </header>
+
+    <div class="post-content">
+      <h2 id="第四章"><a href="#第四章" class="headerlink" title="第四章"></a>第四章</h2><h3 id="4-1线性判据基本概念"><a href="#4-1线性判据基本概念" class="headerlink" title="4.1线性判据基本概念"></a>4.1线性判据基本概念</h3><ul>
+<li>生成模型：直接在输入空间中学习其概率密度p(x)，对于贝叶斯分类，用作观测似然。然后可以通过这个p(x)生成新的样本数据；也可以检测出较低概率的数据，进行离群点检测。但是p(x)需要大量的数据才能学习得好，不然会出现维度灾难。</li>
+<li>判别模型：直接在输入空间输出后验概率。快速，省去了观测似然的部分。</li>
+<li>线性判据：如果判别模型f(x)是线性函数，那f(x)为线性判据。对于二分类，决策边界是线性；对于多分类，相邻两类的决策边界也是线性。计算量少，适合样本少的情况。</li>
+<li>线性判据模型：f(x) &#x3D; w.T @ x + w0, w决定了决策边界的方向，w0决定了决策边界的偏移量，使得输出可为正负。</li>
+<li>任意样本x到决策边界的垂直距离：r &#x3D; f(x) &#x2F; ||w||。</li>
+</ul>
+<h3 id="4-2线性判据学习概述"><a href="#4-2线性判据学习概述" class="headerlink" title="4.2线性判据学习概述"></a>4.2线性判据学习概述</h3><ul>
+<li>线性判据有可能有多个解，所以学习算法要去找到最优解，也就是最优的w和w0。</li>
+<li>目标函数常有均方差、交叉熵，加入各种约束条件来提高泛化能力，如正则项、加入边缘约束等，缩小解域。对其求最优一般两个方法：解析解、迭代梯度下降。</li>
+</ul>
+<h3 id="4-3并行感知机算法"><a href="#4-3并行感知机算法" class="headerlink" title="4.3并行感知机算法"></a>4.3并行感知机算法</h3><ul>
+<li>感知机算法需要将负label取反。</li>
+<li>目标函数是被错误分类的所有训练样本的输出取反求和。</li>
+<li>由于目标函数求偏导后不含参数w和w0，所以使用梯度下降来找最优，需要设置步长、阈值，和初始化w和w0，当目标函数小于阈值或者大于等于0后，停止。</li>
+</ul>
+<h3 id="4-4串行感知机算法"><a href="#4-4串行感知机算法" class="headerlink" title="4.4串行感知机算法"></a>4.4串行感知机算法</h3><ul>
+<li>训练样本一个一个给出的时候，叫做串行。</li>
+<li>目标函数相对于并行，变成对当前训练样本的输出取反。遍历所有样本，当ak.T @ yn时更新ak+1。</li>
+<li>如果训练样本是线性可分的，感知机算法理论上会收敛。步长能够决定收敛的速度，以及是否收敛到局部或者全局最优点。目标函数如果对于任意a，存在常数L，使得|J(a)| &lt; L，那么步长为1 &#x2F; (2L) 的时候能够收敛到局部最优。如果目标函数是凸函数，局部最优就是全局最优。</li>
+<li>当样本位于决策边界边缘的时候，对样本的决策有很大的不确定性，加入边缘约束b，使得解出的w和w0不为0。</li>
+</ul>
+<h3 id="4-5Fisher线性判据"><a href="#4-5Fisher线性判据" class="headerlink" title="4.5Fisher线性判据"></a>4.5Fisher线性判据</h3><ul>
+<li>Fisher：找到一个合适的投影轴，使得两类样本在轴上重叠部分最少。也就是类内样本离散程度更小，更聚集，类间差异更大，距离更远。</li>
+<li>类间样本用均值差度量，类内样本用协方差矩阵度量。</li>
+<li>fisher中利用协方差的逆，将两类均值差的向量进行旋转，以适应类分布的形状。</li>
+</ul>
+<h3 id="4-6支持向量机基本概念"><a href="#4-6支持向量机基本概念" class="headerlink" title="4.6支持向量机基本概念"></a>4.6支持向量机基本概念</h3><ul>
+<li>感知机思想：最小化分类误差；fisher：数据降到一维，最大化类间距离，最小化类内散度。</li>
+<li>支持向量机思想：两个类与决策边界最近的训练样本到决策边界的距离和最大。</li>
+<li>支持向量机需要将负类label设为-1。引入概念：支持向量。</li>
+<li>目标函数就是最大化间隔的距离和，约束条件是间隔里面没有样本，也就是输出值的绝对值要大于间隔值，ppt上为1。</li>
+</ul>
+<h3 id="4-7拉格朗日乘数法"><a href="#4-7拉格朗日乘数法" class="headerlink" title="4.7拉格朗日乘数法"></a>4.7拉格朗日乘数法</h3><ul>
+<li>利用拉格朗日乘数法解决条件优化问题。</li>
+<li>分为不等式约束和等式约束的优化问题。</li>
+<li>等式约束中g(x) &#x3D; 0的条件，使得λ可正可负，f(x)和g(x)的梯度方向一定平行，但方向可能同向或者反向，且梯度幅值不同。</li>
+<li>不等式约束分为两种情况，一种是极值点在可行域内，相当于g(x) &lt; 0，那么必有λ为0；另一种是极值点落在可行域边界，那么λ大于0，即f(x)的梯度方向将和g(x)平行且相反。</li>
+</ul>
+<h3 id="4-8拉格朗日对偶问题"><a href="#4-8拉格朗日对偶问题" class="headerlink" title="4.8拉格朗日对偶问题"></a>4.8拉格朗日对偶问题</h3><ul>
+<li>对于要求解的主问题，往往难以求解。因此引入对偶函数，给出了主问题最优值的下界。</li>
+<li>对偶函数与x无关，并且是凹函数。目标函数是凹函数，约束条件是凸函数，那么对偶问题是凸优化问题，不论主函数的凹凸性。</li>
+<li>凸优化的性质：局部极值点就是全局极值点，于是对于主问题的求解，往往可以求解其对偶问题，得到主问题的下界估计。</li>
+<li>分为强对偶性和弱对偶性。</li>
+</ul>
+<h3 id="4-9支持向量机学习算法"><a href="#4-9支持向量机学习算法" class="headerlink" title="4.9支持向量机学习算法"></a>4.9支持向量机学习算法</h3><ul>
+<li>回到4.6节未解决的最大化间隔的距离和，构建拉格朗日函数、对偶函数。</li>
+<li>对对偶函数进行一系列的演化，利用二次规划求解N个最优的拉格朗日乘数，并以此计算最优的w和w0。</li>
+<li>w和w0的学习过程实际上是在训练样本中选择一组支持向量，用作线性分类器。</li>
+</ul>
+<h3 id="4-10软间隔支持向量机"><a href="#4-10软间隔支持向量机" class="headerlink" title="4.10软间隔支持向量机"></a>4.10软间隔支持向量机</h3><ul>
+<li>由于绝对地要求间隔中无样本，并且可能存在噪声和异常点，导致其被选作支持向量，使得决策边界过拟合。所以允许在一定程度上，让训练样本出现在间隔区域内。</li>
+<li>因此引入松弛变量，松弛变量的大小决定了错误分类的程度，一般不能超过间隔大小，使得线性SVM可以近似分类非线性数据。</li>
+<li>再引入正则系数，对错分进行惩罚，但要控制C不能过大，防止过拟合。</li>
+<li>同样地，构建拉格朗日函数、对偶函数来求最优的w和w0。</li>
+</ul>
+<h3 id="4-11线性判据多类分类"><a href="#4-11线性判据多类分类" class="headerlink" title="4.11线性判据多类分类"></a>4.11线性判据多类分类</h3><ul>
+<li>多类分类的本质是非线性。于是需要多个分类器进行组合。</li>
+<li>方式一：one2all，需要K个分类器，并假设每个类与其他类线性可分。样本属于分类器输出为正的类。决策边界垂直于wi。不适合数据集不平衡，会出现重叠区域和拒绝区域。</li>
+<li>方式二：线性机，对于输出，不再使用选择值为正的类，而是选择输出最大的类。因为离分类边界越远，该类被判错可能性越小，由此解决了重叠区域，但仍不能解决拒绝区域。</li>
+<li>方式三：one2one，化为一个正类，其余类均为负类，共需要K(K - 1) &#x2F; 2个分类器，能够避免数据集不平衡的问题。如果所有和Ci相关的分类器输出都为正，那么x属于Ci。可以适用于线性不可分的情况，实现非线性分类。仍存在拒绝区域，于是使用输出max思想，选择与其成对的所有分类器输出之和最大的类。</li>
+</ul>
+<h3 id="4-12线性回归"><a href="#4-12线性回归" class="headerlink" title="4.12线性回归"></a>4.12线性回归</h3><ul>
+<li>输入样本分为tall数据和wide数据。</li>
+<li>线性回归需要学习参数W，目标函数使用均方误差，最小化其输出和真值的误差。一般使用二范式。</li>
+<li>使用最小二乘法或者梯度下降法来目标优化。</li>
+<li>其中，如果X.T @ X是非奇异矩阵，那么W有唯一解，否则，W有无穷个解或者无解。对于tall数据，X.T @ X是非奇异矩阵的可能性大，如果是wide数据，那必定是奇异矩阵。因此，最小二乘法适合tall数据。</li>
+<li>最大似然等同于最小化均方误差。</li>
+</ul>
+<h3 id="4-13逻辑回归的概念"><a href="#4-13逻辑回归的概念" class="headerlink" title="4.13逻辑回归的概念"></a>4.13逻辑回归的概念</h3><ul>
+<li>当两个类别数据的协方差不同时，MAP分类器的决策边界是超二次型曲面，非线性。</li>
+<li>当观测是高斯分布并且协方差矩阵相同时，利用logit变换，后验概率对数比率等于线性判据输出。</li>
+<li>线性模型f(x)输入sigmoid函数，得到logistic回归，就是其后验概率。</li>
+<li>逻辑回归是一个非线性模型，对于分类任务，只能处理线性可分的情况；对于拟合任务，能够拟合有限的非线性曲线。</li>
+</ul>
+<h3 id="4-14逻辑回归的学习"><a href="#4-14逻辑回归的学习" class="headerlink" title="4.14逻辑回归的学习"></a>4.14逻辑回归的学习</h3><ul>
+<li>逻辑回归需要学习w和w0。负类标签设为0。</li>
+<li>利用最大似然估计，对于所有训练样本，最大化输出标签分布的似然函数，求得参数的最优值。</li>
+<li>利用梯度下降法，迭代得到w和w0。</li>
+<li>sigmoid函数会出现梯度消失问题，在输出值接近于1的时候，输入的巨大变化也只能导致输出的小范围变动。所以在初始化的时候，选择较小的初始值，并设置阈值，到达阈值的精度时，停止迭代，防止过拟合。在神经网络中，利用relu等激活函数来代替sigmoid。</li>
+</ul>
+<h3 id="4-15Softmax判据的概念"><a href="#4-15Softmax判据的概念" class="headerlink" title="4.15Softmax判据的概念"></a>4.15Softmax判据的概念</h3><ul>
+<li>分类K个类，构建K个线性分类器，分为该类和剩余类。由于所有类的后验概率和为1，可以得到任意类的后验概率表示。也就使得K个线性分类器能够计算得到每个类的后验概率。</li>
+<li>该方法叫做Softmax函数，由于K个分类器的输出，特别是一个类远大于其他类，此时需要将其进行exp函数和归一化操作。与max函数不同的是，Softmax函数可微分。</li>
+<li>由此得到Softmax判据，就是得到最大Softmax函数计算得到的那个类的下标。在分类任务时，等同于one2one的线性机。</li>
+<li>Softmax判据常用于神经网络的输出层之后，比如利用CNN来分类手写数字时，得到其输出最大值下标。</li>
+<li>Softmax判据是一个非线性模型，对于分类任务，能够处理多个类别、每个类别和其余类线性可分的情况；对于回归任务，能够拟合exp形的非线性曲线。</li>
+</ul>
+<h3 id="4-16Softmax判据的学习"><a href="#4-16Softmax判据的学习" class="headerlink" title="4.16Softmax判据的学习"></a>4.16Softmax判据的学习</h3><ul>
+<li>Softmax判据需要学习K组w和w0。</li>
+<li>和逻辑回归的学习相似，目标函数能够使用交叉熵解释。不同的是，使用one-hot编码，模型输出的概率分布符合多项分布。</li>
+<li>在目标函数梯度下降求w和w0时，与逻辑回归不同的是，Softmax针对每个输出类别分别计算梯度值，但每个参数的梯度值与所有的类别样本都相关。</li>
+<li>Softmax判据输出为非线性，但只能刻画线性分类边界。</li>
+</ul>
+<h3 id="4-17核支持向量机（Kernel-SVM）"><a href="#4-17核支持向量机（Kernel-SVM）" class="headerlink" title="4.17核支持向量机（Kernel SVM）"></a>4.17核支持向量机（Kernel SVM）</h3><ul>
+<li>Kernel思想是将低维空间中线性不可分的样本数据，找到一个映射，使得这些样本数据在高维空间线性可分。</li>
+<li>由此，就能够使用SVM来进行分类。</li>
+<li>核函数：在低维空间的一个非线性函数，包含向量映射和点积计算。</li>
+<li>核SVM的决策是关于测试样本和支持向量的核函数的线性组合。决策边界是非线性的。</li>
+<li>同样的，在高维空间中计算SVM时，也需要计算其对偶问题的解，对于软间隔SVM也需要引入松弛量。</li>
+<li>多项式核可以解决线性不可分问题，但当参数较大时，计算困难，超参数多。</li>
+<li>高斯核具有更明显的非线性，但容易过拟合。</li>
+</ul>
+
+    </div>
+
+  </article>
+  <div class="toc-container">
+    
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E7%AB%A0"><span class="toc-text">第四章</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1%E7%BA%BF%E6%80%A7%E5%88%A4%E6%8D%AE%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-text">4.1线性判据基本概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2%E7%BA%BF%E6%80%A7%E5%88%A4%E6%8D%AE%E5%AD%A6%E4%B9%A0%E6%A6%82%E8%BF%B0"><span class="toc-text">4.2线性判据学习概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3%E5%B9%B6%E8%A1%8C%E6%84%9F%E7%9F%A5%E6%9C%BA%E7%AE%97%E6%B3%95"><span class="toc-text">4.3并行感知机算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4%E4%B8%B2%E8%A1%8C%E6%84%9F%E7%9F%A5%E6%9C%BA%E7%AE%97%E6%B3%95"><span class="toc-text">4.4串行感知机算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-5Fisher%E7%BA%BF%E6%80%A7%E5%88%A4%E6%8D%AE"><span class="toc-text">4.5Fisher线性判据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-6%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-text">4.6支持向量机基本概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-7%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5%E4%B9%98%E6%95%B0%E6%B3%95"><span class="toc-text">4.7拉格朗日乘数法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-8%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5%E5%AF%B9%E5%81%B6%E9%97%AE%E9%A2%98"><span class="toc-text">4.8拉格朗日对偶问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-9%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95"><span class="toc-text">4.9支持向量机学习算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-10%E8%BD%AF%E9%97%B4%E9%9A%94%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA"><span class="toc-text">4.10软间隔支持向量机</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-11%E7%BA%BF%E6%80%A7%E5%88%A4%E6%8D%AE%E5%A4%9A%E7%B1%BB%E5%88%86%E7%B1%BB"><span class="toc-text">4.11线性判据多类分类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-12%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92"><span class="toc-text">4.12线性回归</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-13%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="toc-text">4.13逻辑回归的概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-14%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92%E7%9A%84%E5%AD%A6%E4%B9%A0"><span class="toc-text">4.14逻辑回归的学习</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-15Softmax%E5%88%A4%E6%8D%AE%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="toc-text">4.15Softmax判据的概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-16Softmax%E5%88%A4%E6%8D%AE%E7%9A%84%E5%AD%A6%E4%B9%A0"><span class="toc-text">4.16Softmax判据的学习</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-17%E6%A0%B8%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA%EF%BC%88Kernel-SVM%EF%BC%89"><span class="toc-text">4.17核支持向量机（Kernel SVM）</span></a></li></ol></li></ol>
+  </div>
+
+
+  </div>
+</div>
+<div class="copyright">
+    <span>本作品采用</span>
+    <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by/4.0/">知识共享署名 4.0 国际许可协议</a>
+    <span>进行许可。 转载时请注明原文链接。</span>
+</div>
+
+
+  
+    <div class="post-nav">
+      <div class="post-nav-item post-nav-next">
+        
+          <span>〈 </span>
+          <a href="/2023/03/27/rknntoolkit/" rel="next" title="rknn资料记录">
+          rknn资料记录
+          </a>
+        
+      </div>
+  
+      <div class="post-nav-item post-nav-prev">
+          
+          <a href="/2023/03/27/%E7%AC%AC%E4%B8%89%E7%AB%A0/" rel="prev" title="机器学习第三章笔记">
+            机器学习第三章笔记
+          </a>
+          <span>〉</span>
+        
+      </div>
+    </div>
+  
+
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+    <div id="gitalk-container"></div>
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script type="text/javascript">
+        var gitalk = new Gitalk({
+            clientID: 'xxx',
+            clientSecret: 'xxx',
+            id: window.location.pathname,
+            repo: 'issue repo name',
+            owner: 'Github username',
+            admin: 'github username'
+        })
+        gitalk.render('gitalk-container')
+    </script>
+
+
+
+    </div>
+
+    
+
+  </div>
+  <footer class="footer text-center">
+    <div id="bottom-inner">
+        <a class="bottom-item" href="https://github.com/fooying" target="_blank">GitHub</a> |
+        <a class="bottom-item" href="/links">友情链接</a> |
+        <a class="bottom-item" href="https://hexo.io" target="_blank">Powered by hexo</a> |
+        <a class="bottom-item" href="https://github.com/fooying/hexo-theme-xoxo-plus" target="_blank">Theme xoxo-plus</a> |
+        <a class="bottom-item" href="/atom.xml">RSS</a>
+    </div>
+</footer>
+
+  
+
+<script>
+  (function(window, document, undefined) {
+
+    var timer = null;
+
+    function returnTop() {
+      cancelAnimationFrame(timer);
+      timer = requestAnimationFrame(function fn() {
+        var oTop = document.body.scrollTop || document.documentElement.scrollTop;
+        if (oTop > 0) {
+          document.body.scrollTop = document.documentElement.scrollTop = oTop - 50;
+          timer = requestAnimationFrame(fn);
+        } else {
+          cancelAnimationFrame(timer);
+        }
+      });
+    }
+
+    var hearts = [];
+    window.requestAnimationFrame = (function() {
+      return window.requestAnimationFrame ||
+        window.webkitRequestAnimationFrame ||
+        window.mozRequestAnimationFrame ||
+        window.oRequestAnimationFrame ||
+        window.msRequestAnimationFrame ||
+        function(callback) {
+          setTimeout(callback, 1000 / 60);
+        }
+    })();
+    init();
+
+    function init() {
+      css(".heart{z-index:9999;width: 10px;height: 10px;position: fixed;background: #f00;transform: rotate(45deg);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);}.heart:after,.heart:before{content: '';width: inherit;height: inherit;background: inherit;border-radius: 50%;-webkit-border-radius: 50%;-moz-border-radius: 50%;position: absolute;}.heart:after{top: -5px;}.heart:before{left: -5px;}");
+      attachEvent();
+      gameloop();
+      addMenuEvent();
+    }
+
+    function gameloop() {
+      for (var i = 0; i < hearts.length; i++) {
+        if (hearts[i].alpha <= 0) {
+          document.body.removeChild(hearts[i].el);
+          hearts.splice(i, 1);
+          continue;
+        }
+        hearts[i].y--;
+        hearts[i].scale += 0.004;
+        hearts[i].alpha -= 0.013;
+        hearts[i].el.style.cssText = "left:" + hearts[i].x + "px;top:" + hearts[i].y + "px;opacity:" + hearts[i].alpha + ";transform:scale(" + hearts[i].scale + "," + hearts[i].scale + ") rotate(45deg);background:" + hearts[i].color;
+      }
+      requestAnimationFrame(gameloop);
+    }
+
+    /**
+     * 给logo设置点击事件
+     * 
+     * - 回到顶部
+     * - 出现爱心
+     */
+    function attachEvent() {
+      var old = typeof window.onclick === "function" && window.onclick;
+      var logo = document.getElementById("logo");
+      if (logo) {
+        logo.onclick = function(event) {
+          returnTop();
+          old && old();
+          createHeart(event);
+        }
+      }
+      
+    }
+
+    function createHeart(event) {
+      var d = document.createElement("div");
+      d.className = "heart";
+      hearts.push({
+        el: d,
+        x: event.clientX - 5,
+        y: event.clientY - 5,
+        scale: 1,
+        alpha: 1,
+        color: randomColor()
+      });
+      document.body.appendChild(d);
+    }
+
+    function css(css) {
+      var style = document.createElement("style");
+      style.type = "text/css";
+      try {
+        style.appendChild(document.createTextNode(css));
+      } catch (ex) {
+        style.styleSheet.cssText = css;
+      }
+      document.getElementsByTagName('head')[0].appendChild(style);
+    }
+
+    function randomColor() {
+      // return "rgb(" + (~~(Math.random() * 255)) + "," + (~~(Math.random() * 255)) + "," + (~~(Math.random() * 255)) + ")";
+      return "#F44336";
+    }
+
+    function addMenuEvent() {
+      var menu = document.getElementById('menu-main-post');
+      if (menu) {
+        var toc = document.getElementById('toc');
+        if (toc) {
+          menu.onclick = function() {
+            if (toc) {
+              if (toc.style.display == 'block') {
+                toc.style.display = 'none';
+              } else {
+                toc.style.display = 'block';
+              }
+            }
+          };
+        } else {
+          menu.style.display = 'none';
+        }
+      }
+    }
+
+  })(window, document);
+</script>
+
+  
+
+
+
+  
+<script>
+  (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+          bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else {
+          bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+</body>
+</html>
